@@ -1,7 +1,12 @@
 import os
 from flask import Flask
+from logger import info_handler, error_handler
 
 app = Flask(__name__)
+
+# set log
+app.logger.addHandler(info_handler)
+app.logger.addHandler(error_handler)
 
 
 @app.route('/')
