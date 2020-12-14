@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  app:
+    container_name: flask_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/opt/api
+    tty: true
+    ports:
+      - 5000:5000
+    environment:
+      TZ: Asia/Tokyo
+      PYTHONPATH: /opt/api
+      PORT: 5000
