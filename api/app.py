@@ -1,7 +1,15 @@
 import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+import dotenv
 from flask import Flask, jsonify
 from logger import info_handler, error_handler
 from api import api as api_controller
+
+# load .env
+load_dotenv(verbose=True)
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
@@ -31,7 +39,10 @@ def main():
     """
     host = os.getenv('HOST', '0.0.0.0')
     port = int(os.getenv('PORT', '5000'))
-    app.run(host=host, port=port)
+    mode = os.environ.get('MODE', None)
+    debug = mode == 'development'
+    print('Mode >', mode, 'DEBUG:', debug)
+    app.run(debug=debug, host=host, port=port)
 
 
 if __name__ == '__main__':
