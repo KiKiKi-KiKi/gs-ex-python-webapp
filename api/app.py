@@ -1,7 +1,6 @@
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
-import dotenv
 from flask import Flask, jsonify
 from logger import info_handler, error_handler
 from api import api as api_controller
@@ -13,7 +12,7 @@ load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
-# 日本語文字化け大作
+# 日本語文字化け対策
 app.config['JSON_AS_ASCII'] = False
 # ソートをそのままにする
 app.config['JSON_SORT_KEYS'] = False
