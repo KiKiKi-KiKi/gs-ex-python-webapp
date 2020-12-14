@@ -13,7 +13,9 @@ START_YEAR = '2012年'
 def format_date(jp_date_str):
     date_array = [int(n) for n in split('[年月日]', jp_date_str) if n]
     # 配列を展開して関数に渡す
-    return dt(*date_array)
+    date = dt(*date_array)
+    # format
+    return date.strftime('%Y-%m-%d (%a)')
 
 
 def froamt_table_row(_year):
