@@ -11,6 +11,3 @@ ARG project_dir=/opt/api
 ADD ./api $project_dir
 
 WORKDIR $project_dir
-
-# run flask app
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi
