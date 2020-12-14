@@ -1,5 +1,5 @@
 from random import shuffle
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from bs4 import BeautifulSoup
 from http_exception import bad_request
 from scraping import get_web_data
@@ -34,7 +34,7 @@ def get_one_by_index(story_no):
     no = int(story_no)
 
     if not no:
-        bad_request('NO DATA!')
+        return bad_request('NO DATA!')
 
     res = None
     data = get_data()
@@ -50,6 +50,29 @@ def get_one_by_index(story_no):
         if story[0] == no:
             res = story
             break
+
+    return jsonify({
+        'status': 'ok',
+        'data': res
+    })
+
+
+@api.route('/api/search', methods=['GET', 'POST'])
+def api_search():
+    keyword = request.args.get('keyword')
+
+    if not keyword:
+        return bad_request('NO DATA!')
+
+    res = []
+    data = get_data()
+
+    for story in data:
+        story_str = " ".join(map(str, story))
+        # keyword が含まれているかチェック
+        match = keyword in story_str
+        if match:
+            res.append(story)
 
     return jsonify({
         'status': 'ok',
