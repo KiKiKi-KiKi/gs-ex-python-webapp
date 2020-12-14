@@ -1,4 +1,3 @@
-from urllib.request import urlopen
 from random import shuffle
 from flask import Blueprint, jsonify
 from bs4 import BeautifulSoup
