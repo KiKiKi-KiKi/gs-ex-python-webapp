@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 from re import search, split
 from datetime import date as dt
+from data.list import songs
 
 TARGET_URL = 'https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%A4%E3%82%AB%E3%83%84!_(%E3%82%A2%E3%83%8B%E3%83%A1)'
 
@@ -52,6 +53,31 @@ def froamt_table_row(_year):
     return _format
 
 
+def merge_op_ed(data):
+    op_list = songs.get('op')
+    ed_list = songs.get('ed')
+
+    new_data = []
+
+    for d in data:
+        n = d[0]
+        op_ed = {}
+        for op in op_list:
+            if n in op['stories']:
+                op_ed['op'] = op['title']
+                break
+
+        for ed in ed_list:
+            if n in ed['stories']:
+                op_ed['ed'] = ed['title']
+                break
+
+        d.insert(-1, op_ed)
+        new_data.append(d)
+
+    return new_data
+
+
 def get_web_data():
     with urlopen(TARGET_URL) as res:
         html = res.read().decode('utf-8')
@@ -70,7 +96,7 @@ def get_web_data():
             rowData = table_format(row)
             data.append(rowData)
 
-    return data
+    return merge_op_ed(data)
 
 
 # get_web_data()
